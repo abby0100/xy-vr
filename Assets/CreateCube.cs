@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class CreateCube : MonoBehaviour {
 
@@ -8,17 +9,19 @@ public class CreateCube : MonoBehaviour {
 	private ArrayList arrayListRGB = new ArrayList();
 	private Vector3 xyz;
 	private Color colorRGB;
-	//private int numPoints = 60000;	
-	private int numPoints = 8;
+	private int numPoints = 60000;	
+	//private int numPoints = 360;
 
 	// Use this for initialization
 	void Start () {
 	
 		// 1. 读取数据
-		readData();
+		//readData();
+		readDataFromFile();
 
 		// 2. 渲染
 		renderData();
+
 	}
 
 	private void createSemphere(float x, float y, float z) {
@@ -38,13 +41,15 @@ public class CreateCube : MonoBehaviour {
 	}
 
 	private void renderData() {
-		Debug.Log("xy ==> renderData");
+		Debug.Log("xy ==> 2 renderData");
 
 		int num = arrayListRGB.Count;
-
+		Debug.Log("xy ==> renderData num=" + num);
+		Debug.Log("xy ==> renderData numPoints=" + numPoints);
 		int meshNum = num / numPoints;
 		int leftPointsNum = num % numPoints;
 		Debug.Log("xy ==> renderData meshNum=" + meshNum);
+		Debug.Log("xy ==> renderData leftPointsNum=" + meshNum);
 		int i = 0;
 
 		for (; i < meshNum; i++)
@@ -94,18 +99,72 @@ public class CreateCube : MonoBehaviour {
 
 	}
 
-	private void readData() {
-		Debug.Log("xy ==> readData");
+	private void readDataFromFile() {
+		Debug.Log("xy ==> 1.1 readDataFromFile");
 
-	//		0 0 0 0 30 145 170
-	//		0 0 1 0 30 145 170
-	//		0 1 1 0 30 145 170
-	//		0 1 0 0 30 145 170
-	//		1 0 0 0 30 145 170
-	//		1 0 1 0 30 145 170
-	//		1 1 1 0 30 145 170
-	//		1 1 0 0 30 145 170
+		// 1. 读取数据
+		// 提前将点云存成txt文件放在Assert/StreamingAssets文件夹下，文本的每行代表一个点，由点的x，y，z，r，g，b六个float组成
+		string fileAddress = (Application.streamingAssetsPath + "/" + "test0.txt");
+		FileInfo fInfo0 = new FileInfo(fileAddress);
+		Debug.Log(fileAddress);
+
+		string s = "";
+		StreamReader r;
+		arrayListXYZ = new ArrayList();
+		arrayListRGB = new ArrayList();
+
+		if (fInfo0.Exists)
+		{
+			Debug.Log("xy ==> readDataFromFile FileInfo Exists");
+			r = new StreamReader(fileAddress);
+		}
+		else
+		{
+			Debug.Log("NO THIS FILE!");
+			return;
+		}
+		// 将文本中的点云数据读入分别存到xyz数组和rgb数组中
+		while ((s = r.ReadLine()) != null)
+		{
+			string[] words = s.Split(" "[0]);
+
+			Vector3 xyz = new Vector3(float.Parse(words[0]), -float.Parse(words[1]), float.Parse(words[2]));
+			arrayListXYZ.Add(xyz);
+			Color colorRGB = new Color(float.Parse(words[3]) / 255.0f, float.Parse(words[4]) / 255.0f, float.Parse(words[5]) / 255.0f);
+			arrayListRGB.Add(colorRGB);
+			Debug.Log("xy readDataFromFile: " + xyz.ToString() + ", " + colorRGB.ToString());
+		}
+		Debug.Log("xy readDataFromFile arrayListXYZ size: " + arrayListXYZ.Count);
+		Debug.Log("xy readDataFromFile arrayListRGB size: " + arrayListRGB.Count);
+	}
+
+	private void readData() {
+		Debug.Log("xy ==> 1.0 readData");
+
+		//		0 0 0 0 30 145 170
+		//		0 0 1 0 30 145 170
+		//		0 1 1 0 30 145 170
+		//		0 1 0 0 30 145 170
+		//		1 0 0 0 30 145 170
+		//		1 0 1 0 30 145 170
+		//		1 1 1 0 30 145 170
+		//		1 1 0 0 30 145 170
 		xyz = new Vector3(0, 0, 0);
+		arrayListXYZ.Add(xyz);
+		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
+		arrayListRGB.Add(colorRGB);
+
+		xyz = new Vector3(0, 0, 0.3f);
+		arrayListXYZ.Add(xyz);
+		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
+		arrayListRGB.Add(colorRGB);
+
+		xyz = new Vector3(0, 0, 0.5f);
+		arrayListXYZ.Add(xyz);
+		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
+		arrayListRGB.Add(colorRGB);
+
+		xyz = new Vector3(0, 0, 0.8f);
 		arrayListXYZ.Add(xyz);
 		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
 		arrayListRGB.Add(colorRGB);
@@ -135,7 +194,37 @@ public class CreateCube : MonoBehaviour {
 		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
 		arrayListRGB.Add(colorRGB);
 
+		xyz = new Vector3(1, 0.3f, 1);
+		arrayListXYZ.Add(xyz);
+		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
+		arrayListRGB.Add(colorRGB);
+
+		xyz = new Vector3(1, 0.5f, 1);
+		arrayListXYZ.Add(xyz);
+		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
+		arrayListRGB.Add(colorRGB);
+
+		xyz = new Vector3(1, 0.8f, 1);
+		arrayListXYZ.Add(xyz);
+		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
+		arrayListRGB.Add(colorRGB);
+
 		xyz = new Vector3(1, 1, 1);
+		arrayListXYZ.Add(xyz);
+		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
+		arrayListRGB.Add(colorRGB);
+
+		xyz = new Vector3(1, 1, 0.7f);
+		arrayListXYZ.Add(xyz);
+		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
+		arrayListRGB.Add(colorRGB);
+
+		xyz = new Vector3(1, 1, 0.5f);
+		arrayListXYZ.Add(xyz);
+		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
+		arrayListRGB.Add(colorRGB);
+
+		xyz = new Vector3(1, 1, 0.3f);
 		arrayListXYZ.Add(xyz);
 		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
 		arrayListRGB.Add(colorRGB);

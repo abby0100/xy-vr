@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\CreateCube.cs" />
+     <None Include="Assets\StreamingAssets\test0.txt" />
      <None Include="Assets\GetPointCloudFromTXT.cs.txt" />
      <None Include="Assets\DisplayPointCloudByGpu.cs.txt" />
      <None Include="Assets\Shader.shader" />
