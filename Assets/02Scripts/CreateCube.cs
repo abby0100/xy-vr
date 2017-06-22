@@ -9,8 +9,9 @@ public class CreateCube : MonoBehaviour {
 	private ArrayList arrayListRGB = new ArrayList();
 	private Vector3 xyz;
 	private Color colorRGB;
-	private int numPoints = 60000;	
-	//private int numPoints = 360;
+	private int index = 5000;	
+	private int numPoints = 65000;	
+	//private int numPoints = 180000;
 
 	// Use this for initialization
 	void Start () {
@@ -19,8 +20,11 @@ public class CreateCube : MonoBehaviour {
 			+ System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "." + System.DateTime.Now.Millisecond);
 		// 1. 读取数据
 		readFullData();
-//		readDataFromFile();
+		//readDataFromFile();
 
+		Debug.Log("xy ==> 1 Start : " + System.DateTime.Now.Month + "-" + System.DateTime.Now.Day + ", " 
+			+ System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "." + System.DateTime.Now.Millisecond);
+		
 		// 2. 渲染
 		renderData();
 
@@ -28,142 +32,20 @@ public class CreateCube : MonoBehaviour {
 			+ System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "." + System.DateTime.Now.Millisecond);
 	}
 
-//	private void readDataFromFile() {
-//		Debug.Log("xy ==> 1.1 readDataFromFile");
-//
-//		// 1. 读取数据
-//		// 提前将点云存成txt文件放在Assert/StreamingAssets文件夹下，文本的每行代表一个点，由点的x，y，z，r，g，b六个float组成
-//		string fileAddress = (Application.streamingAssetsPath + "/" + "test0.txt");
-//		FileInfo fInfo0 = new FileInfo(fileAddress);
-//		Debug.Log(fileAddress);
-//
-//		string s = "";
-//		StreamReader r;
-//		arrayListXYZ = new ArrayList();
-//		arrayListRGB = new ArrayList();
-//
-//		if (fInfo0.Exists) {
-//			Debug.Log ("xy ==> readDataFromFile Exists");
-//			r = new StreamReader (fileAddress);
-//		} else {
-//			Debug.Log ("No such file!");
-//			return;
-//		}
-//
-//		while((s = r.ReadLine()) != null) {
-//
-//			string[] words = s.Split(" "[0]);
-//
-//			Vector3 xyz = new Vector3(float.Parse(words[0]), -float.Parse(words[1]), float.Parse(words[2]));
-//			arrayListXYZ.Add(xyz);
-//			Color colorRGB = new Color(float.Parse(words[3]) / 255.0f, float.Parse(words[4]) / 255.0f, float.Parse(words[5]) / 255.0f);
-//			arrayListRGB.Add(colorRGB);
-//			Debug.Log("xy readDataFromFile: " + xyz.ToString() + ", " + colorRGB.ToString());
-//		}
-//		//		Debug.Log("xy readDataFromFile arrayListXYZ size: " + arrayListXYZ.Count);
-//		//		Debug.Log("xy readDataFromFile arrayListRGB size: " + arrayListRGB.Count);
-//	}
-
 	private void readFullData() {
 		Debug.Log("xy ==> 1.0 readFullData");
 
 		getFullData ();
-//		xyz = new Vector3(0, 0, 0);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(0, 0, 0.3f);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(0, 0, 0.5f);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(0, 0, 0.8f);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(0, 0, 1);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(0, 1, 1);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(0, 1, 0);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(1, 0, 0);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(1, 0, 1);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(1, 0.3f, 1);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(1, 0.5f, 1);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(1, 0.8f, 1);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(1, 1, 1);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(1, 1, 0.7f);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(1, 1, 0.5f);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(1, 1, 0.3f);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//
-//		xyz = new Vector3(1, 1, 0);
-//		arrayListXYZ.Add(xyz);
-//		colorRGB = new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f);
-//		arrayListRGB.Add(colorRGB);
-//		Debug.Log("xy debug: " + xyz.ToString() + "," + colorRGB.ToString());
-//		Debug.Log("xy debug: " + arrayListXYZ.Count + "," + arrayListRGB.Count);
 	}
 
 	private void getFullData() {
 		Debug.Log("xy ==> getFullData");
 
 		//(0, 0, 0)
-		for(int i = 0; i < 100; i++) {
-			arrayListXYZ.Add (new Vector3(0, 0, 0.01f * i));
-			arrayListXYZ.Add (new Vector3(0, 0.01f * i, 0));
-			arrayListXYZ.Add (new Vector3(0.01f * i, 0, 0));
+		for(int i = 0; i < index; i++) {
+			arrayListXYZ.Add (new Vector3(0, 0, 1.0f * i/index));
+			arrayListXYZ.Add (new Vector3(0, 1.0f * i/index, 0));
+			arrayListXYZ.Add (new Vector3(1.0f * i/index, 0, 0));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
@@ -172,9 +54,9 @@ public class CreateCube : MonoBehaviour {
 		Debug.Log("xy debug: " + arrayListXYZ.Count + "," + arrayListRGB.Count);
 
 		//(0, 0, 1)
-		for(int i = 0; i < 100; i++) {
-			arrayListXYZ.Add (new Vector3(0, 0.01f * i, 1));
-			arrayListXYZ.Add (new Vector3(0.01f * i, 0, 1));
+		for(int i = 0; i < index; i++) {
+			arrayListXYZ.Add (new Vector3(0, 1.0f * i/index, 1));
+			arrayListXYZ.Add (new Vector3(1.0f * i/index, 0, 1));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 		}
@@ -182,9 +64,9 @@ public class CreateCube : MonoBehaviour {
 		Debug.Log("xy debug: " + arrayListXYZ.Count + "," + arrayListRGB.Count);
 
 		//(0, 1, 0)
-		for(int i = 0; i < 100; i++) {
-			arrayListXYZ.Add (new Vector3(0, 1, 0.01f * i));
-			arrayListXYZ.Add (new Vector3(0.01f * i, 1, 0));
+		for(int i = 0; i < index; i++) {
+			arrayListXYZ.Add (new Vector3(0, 1, 1.0f * i/index));
+			arrayListXYZ.Add (new Vector3(1.0f * i/index, 1, 0));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 		}
@@ -192,11 +74,9 @@ public class CreateCube : MonoBehaviour {
 		Debug.Log("xy debug: " + arrayListXYZ.Count + "," + arrayListRGB.Count);
 
 		//(1, 0, 0)
-		for(int i = 0; i < 100; i++) {
-			arrayListXYZ.Add (new Vector3(0, 0, 0.01f * i));
-			arrayListXYZ.Add (new Vector3(0, 0.01f * i, 0));
-			arrayListXYZ.Add (new Vector3(0.01f * i, 0, 0));
-			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
+		for(int i = 0; i < index; i++) {
+			arrayListXYZ.Add (new Vector3(1, 0, 1.0f * i/index));
+			arrayListXYZ.Add (new Vector3(1, 1.0f * i/index, 0));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 		}
@@ -204,15 +84,52 @@ public class CreateCube : MonoBehaviour {
 		Debug.Log("xy debug: " + arrayListXYZ.Count + "," + arrayListRGB.Count);
 
 		//(1, 1, 1)
-		for(int i = 0; i < 100; i++) {
-			arrayListXYZ.Add (new Vector3(1, 0, 0.01f * i));
-			arrayListXYZ.Add (new Vector3(1, 0.01f * i, 0));
+		for(int i = 0; i < index; i++) {
+			arrayListXYZ.Add (new Vector3(1, 1, 1.0f * i/index));
+			arrayListXYZ.Add (new Vector3(1, 1.0f * i/index, 1));
+			arrayListXYZ.Add (new Vector3(1.0f * i/index, 1, 1));
+			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 		}
 		Debug.Log("xy debug: " + xyz.ToString() + "," + colorRGB.ToString());
 		Debug.Log("xy debug: " + arrayListXYZ.Count + "," + arrayListRGB.Count);
+	}
 
+	private void readDataFromFile() {
+		Debug.Log("xy ==> 1.1 readDataFromFile");
+
+		// 1. 读取数据
+		// 提前将点云存成txt文件放在Assert/StreamingAssets文件夹下，文本的每行代表一个点，由点的x，y，z，r，g，b六个float组成
+		string fileAddress = (Application.streamingAssetsPath + "/" + "test0.txt");
+		FileInfo fInfo0 = new FileInfo(fileAddress);
+		Debug.Log(fileAddress);
+
+		string s = "";
+		StreamReader r;
+		arrayListXYZ = new ArrayList();
+		arrayListRGB = new ArrayList();
+
+		if (fInfo0.Exists) {
+			Debug.Log ("xy ==> readDataFromFile Exists");
+			r = new StreamReader (fileAddress);
+		} else {
+			Debug.Log ("No such file!");
+			return;
+		}
+
+		while((s = r.ReadLine()) != null) {
+
+			string[] words = s.Split(" "[0]);
+
+			Vector3 xyz = new Vector3(float.Parse(words[0]), -float.Parse(words[1]), float.Parse(words[2]));
+			arrayListXYZ.Add(xyz);
+			Color colorRGB = new Color(float.Parse(words[3]) / 255.0f, float.Parse(words[4]) / 255.0f, float.Parse(words[5]) / 255.0f);
+			arrayListRGB.Add(colorRGB);
+//			Debug.Log("xy readDataFromFile: " + xyz.ToString() + ", " + colorRGB.ToString());
+		}
+		//		Debug.Log("xy readDataFromFile arrayListXYZ size: " + arrayListXYZ.Count);
+		//		Debug.Log("xy readDataFromFile arrayListRGB size: " + arrayListRGB.Count);
 	}
 
 	private void createSemphere(float x, float y, float z) {
