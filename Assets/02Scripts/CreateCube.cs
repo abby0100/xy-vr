@@ -9,27 +9,36 @@ public class CreateCube : MonoBehaviour {
 	private ArrayList arrayListRGB = new ArrayList();
 	private Vector3 xyz;
 	private Color colorRGB;
+
 	private int index = 5000;	
 	private int numPoints = 65000;	
 	//private int numPoints = 180000;
 
+	System.DateTime startTime;
+	System.DateTime loadTime;
+	System.DateTime renderTime;
+
 	// Use this for initialization
 	void Start () {
 
-		Debug.Log("xy ==> 0 Start : " + System.DateTime.Now.Month + "-" + System.DateTime.Now.Day + ", " 
-			+ System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "." + System.DateTime.Now.Millisecond);
+		startTime = System.DateTime.Now;
+		Debug.Log("xy ==> 0 Start : " + startTime.ToString());
+
 		// 1. 读取数据
 		readFullData();
 		//readDataFromFile();
 
-		Debug.Log("xy ==> 1 Start : " + System.DateTime.Now.Month + "-" + System.DateTime.Now.Day + ", " 
-			+ System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "." + System.DateTime.Now.Millisecond);
+		loadTime = System.DateTime.Now;
+		Debug.Log("xy ==> 1 Start : " + loadTime.ToString());
+		Debug.Log("xy ==> 1 Start : " + (loadTime - startTime).ToString());
 		
 		// 2. 渲染
 		renderData();
 
-		Debug.Log("xy ==> 3 Finish : " + System.DateTime.Now.Month + "-" + System.DateTime.Now.Day + ", " 
-			+ System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "." + System.DateTime.Now.Millisecond);
+		renderTime = System.DateTime.Now;
+		Debug.Log("xy ==> 1 Start : " + renderTime.ToString());
+		Debug.Log("xy ==> 1 Start : " + (renderTime - loadTime));
+		Debug.Log("xy ==> 1 Start : " + (renderTime - startTime));
 	}
 
 	private void readFullData() {
@@ -60,8 +69,6 @@ public class CreateCube : MonoBehaviour {
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 		}
-		Debug.Log("xy debug: " + xyz.ToString() + "," + colorRGB.ToString());
-		Debug.Log("xy debug: " + arrayListXYZ.Count + "," + arrayListRGB.Count);
 
 		//(0, 1, 0)
 		for(int i = 0; i < index; i++) {
@@ -70,8 +77,6 @@ public class CreateCube : MonoBehaviour {
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 		}
-		Debug.Log("xy debug: " + xyz.ToString() + "," + colorRGB.ToString());
-		Debug.Log("xy debug: " + arrayListXYZ.Count + "," + arrayListRGB.Count);
 
 		//(1, 0, 0)
 		for(int i = 0; i < index; i++) {
@@ -80,8 +85,6 @@ public class CreateCube : MonoBehaviour {
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 		}
-		Debug.Log("xy debug: " + xyz.ToString() + "," + colorRGB.ToString());
-		Debug.Log("xy debug: " + arrayListXYZ.Count + "," + arrayListRGB.Count);
 
 		//(1, 1, 1)
 		for(int i = 0; i < index; i++) {
@@ -92,7 +95,6 @@ public class CreateCube : MonoBehaviour {
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 			arrayListRGB.Add (new Color(30f / 255.0f, 145 / 255.0f, 170 / 255.0f));
 		}
-		Debug.Log("xy debug: " + xyz.ToString() + "," + colorRGB.ToString());
 		Debug.Log("xy debug: " + arrayListXYZ.Count + "," + arrayListRGB.Count);
 	}
 
