@@ -26,7 +26,7 @@ public class CreateCube : MonoBehaviour {
 
 		// 1. 读取数据
 		readFullData();
-		//readDataFromFile();
+		readDataFromFile();
 
 		loadTime = System.DateTime.Now;
 		Debug.Log("xy ==> 1 Start : " + loadTime.ToString());
@@ -103,14 +103,15 @@ public class CreateCube : MonoBehaviour {
 
 		// 1. 读取数据
 		// 提前将点云存成txt文件放在Assert/StreamingAssets文件夹下，文本的每行代表一个点，由点的x，y，z，r，g，b六个float组成
-		string fileAddress = (Application.streamingAssetsPath + "/" + "test0.txt");
+//		string fileAddress = (Application.streamingAssetsPath + "/" + "test0.txt");
+		string fileAddress = (Application.streamingAssetsPath + "/" + "sample.txt");
 		FileInfo fInfo0 = new FileInfo(fileAddress);
 		Debug.Log(fileAddress);
 
 		string s = "";
 		StreamReader r;
-		arrayListXYZ = new ArrayList();
-		arrayListRGB = new ArrayList();
+//		arrayListXYZ = new ArrayList();
+//		arrayListRGB = new ArrayList();
 
 		if (fInfo0.Exists) {
 			Debug.Log ("xy ==> readDataFromFile Exists");
@@ -126,28 +127,13 @@ public class CreateCube : MonoBehaviour {
 
 			Vector3 xyz = new Vector3(float.Parse(words[0]), -float.Parse(words[1]), float.Parse(words[2]));
 			arrayListXYZ.Add(xyz);
-			Color colorRGB = new Color(float.Parse(words[3]) / 255.0f, float.Parse(words[4]) / 255.0f, float.Parse(words[5]) / 255.0f);
+//			Color colorRGB = new Color(float.Parse(words[3]) / 255.0f, float.Parse(words[4]) / 255.0f, float.Parse(words[5]) / 255.0f);
+			Color colorRGB = new Color(88.0f / 255.0f, 88.0f / 255.0f, 88.0f / 255.0f);
 			arrayListRGB.Add(colorRGB);
 //			Debug.Log("xy readDataFromFile: " + xyz.ToString() + ", " + colorRGB.ToString());
 		}
 		//		Debug.Log("xy readDataFromFile arrayListXYZ size: " + arrayListXYZ.Count);
 		//		Debug.Log("xy readDataFromFile arrayListRGB size: " + arrayListRGB.Count);
-	}
-
-	private void createSemphere(float x, float y, float z) {
-		Debug.Log("xy ==> createSemphere");
-
-		//我们将obj1初始化为一个Cube立方体，当然我们也可以初始化为其他的形状  
-		GameObject obj1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);  
-		//设置物体的位置Vector3三个参数分别代表x,y,z的坐标数  
-		obj1.transform.position = new Vector3(x,y,z);  
-		//给这个创建出来的对象起个名字  
-		obj1.name = "dujia";  
-		//设置物体的tag值，在赋值之前要在Inspector面板中注册一个tag值  
-		//注册tag值得方法，用鼠标选中摄像机对象在Inspector面板中找到tag，选addtag  
-		obj1.tag = "shui";  
-		//设置物体贴图要图片文件放在(Resources）文件夹下，没有自己创建  
-		//obj1.renderer.material.mainTexture = (Texture)Resources.Load("psb20");	
 	}
 
 	private void renderData() {
