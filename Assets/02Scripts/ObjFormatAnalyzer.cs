@@ -63,8 +63,10 @@ namespace Hont
                 }
                 else if (currentLine.Contains("vt "))
                 {
+//					Debug.Log ("ObjFormatAnalyzer Analyze currentLine " + i + " : " + currentLine);
                     var splitInfo = currentLine.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    vertexTextureList.Add(new Vector() { X = float.Parse(splitInfo[1]), Y = float.Parse(splitInfo[2]), Z = float.Parse(splitInfo[3]) });
+//					vertexTextureList.Add(new Vector() { X = float.Parse(splitInfo[1]), Y = float.Parse(splitInfo[2]), Z = float.Parse(splitInfo[3]) });
+                    vertexTextureList.Add(new Vector() { X = float.Parse(splitInfo[1]), Y = float.Parse(splitInfo[2]), Z = 0.0f });
                 }
                 else if (currentLine.Contains("vn "))
                 {
