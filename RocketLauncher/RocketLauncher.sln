@@ -1,7 +1,7 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{F350D3A5-AFCD-5ECF-323B-FF0317A2318B}") = "RocketLauncher", "Assembly-CSharp.csproj", "{AE21BDA5-44C0-B164-A3D5-B37D7849F680}"
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketLauncher", "Assembly-CSharp.csproj", "{AE21BDA5-44C0-B164-A3D5-B37D7849F680}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +36,4 @@ Global
 		$3.inheritsScope = text/plain
 		$3.scope = text/plain
 	EndGlobalSection
-
 EndGlobal

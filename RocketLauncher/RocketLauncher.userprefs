@@ -1,31 +1,10 @@
-﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Shader/Shader01.shader">
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Test.cs">
     <Files>
-      <File FileName="Assets/Scripts/AndroidManager.cs" Line="44" Column="45" />
-      <File FileName="Assets/Scripts/Test.cs" Line="1" Column="1" />
-      <File FileName="Assets/Shader/Shader01.shader" Line="8" Column="33" />
+      <File FileName="Assets\Scripts\AndroidManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Test.cs" Line="15" Column="38" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Assembly-CSharp" expanded="True">
-            <Node name="Shader" expanded="True">
-              <Node name="Shader01.shader" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State>
-          <Value>ballProceedV</Value>
-          <Value>hitAngle</Value>
-          <Value>_transform.position</Value>
-          <Value>ballPos</Value>
-          <Value>flyStartPos</Value>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

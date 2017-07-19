@@ -11,6 +11,7 @@ public class Test : MonoBehaviour {
 
 	public void OnClickButton()
 	{
+		Debug.Log ("OnClickButton Go");
 		AndroidManager.GetInstance().CallJavaFunc( "javaTestFunc", "UnityJavaJarTest" );
 		Debug.Log ("Go");
 	}
