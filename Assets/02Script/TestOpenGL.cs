@@ -13,6 +13,8 @@ public class TestOpenGL : MonoBehaviour {
 
 		GL.Clear (true, true, Color.grey);
 		GL.PushMatrix ();
+
+		// 设置绘制模式为2D绘制，设置这个模式之后屏幕左下角变为(0,0)，屏幕右上角变为(1,1)，注释之后变为3D真实坐标
 		GL.LoadOrtho ();
 
 		for (var i = 0; i < material.passCount; ++i) {
