@@ -39,11 +39,11 @@ public class TestSocketIO : MonoBehaviour
 		GameObject go = GameObject.Find("SocketIO");
 		socket = go.GetComponent<SocketIOComponent>();
 
-		socket.On("connect", TestConnect);
-		socket.On("open", TestOpen);
-		socket.On("boop", TestBoop);
-		socket.On("error", TestError);
-		socket.On("close", TestClose);
+		socket.On("open", OnOpen);
+		socket.On("connect", OnConnect);
+		socket.On("disconnect", OnDisConnect);
+		socket.On("error", OnError);
+		socket.On("close", OnClose);
 		
 //		StartCoroutine("BeepBoop");
 	}
@@ -72,36 +72,26 @@ public class TestSocketIO : MonoBehaviour
 		socket.Emit("beep");
 	}
 
-	public void TestConnect(SocketIOEvent e)
+	public void OnOpen(SocketIOEvent e)
 	{
-		Debug.Log("[SocketIO] Connect received: " + e.name + " " + e.data);
+		Debug.Log("[SocketIO] received name: " + e.name + ", data: " + e.data);
+	}
+	public void OnConnect(SocketIOEvent e)
+	{
+		Debug.Log("[SocketIO] received name: " + e.name + ", data: " + e.data);
+	}
+	public void OnDisConnect(SocketIOEvent e)
+	{
+		Debug.Log("[SocketIO] received name: " + e.name + ", data: " + e.data);
+	}
+	public void OnError(SocketIOEvent e)
+	{
+		Debug.Log("[SocketIO] received name: " + e.name + ", data: " + e.data);
+	}
+	public void OnClose(SocketIOEvent e)
+	{
+		Debug.Log("[SocketIO] received name: " + e.name + ", data: " + e.data);
 	}
 
-	public void TestOpen(SocketIOEvent e)
-	{
-		Debug.Log("[SocketIO] Open received: " + e.name + " " + e.data);
-	}
-	
-	public void TestBoop(SocketIOEvent e)
-	{
-		Debug.Log("[SocketIO] Boop received: " + e.name + " " + e.data);
 
-		if (e.data == null) { return; }
-
-		Debug.Log(
-			"#####################################################" +
-			"THIS: " + e.data.GetField("this").str +
-			"#####################################################"
-		);
-	}
-	
-	public void TestError(SocketIOEvent e)
-	{
-		Debug.Log("[SocketIO] Error received: " + e.name + " " + e.data);
-	}
-	
-	public void TestClose(SocketIOEvent e)
-	{	
-		Debug.Log("[SocketIO] Close received: " + e.name + " " + e.data);
-	}
 }
