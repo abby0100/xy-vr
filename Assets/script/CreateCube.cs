@@ -25,21 +25,6 @@ public class CreateCube : MonoBehaviour {
 
 	}
 
-	private void createSemphere(float x, float y, float z) {
-		Debug.Log("xy ==> createSemphere");
-
-		//我们将obj1初始化为一个Cube立方体，当然我们也可以初始化为其他的形状  
-		GameObject obj1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);  
-		//设置物体的位置Vector3三个参数分别代表x,y,z的坐标数  
-		obj1.transform.position = new Vector3(x,y,z);  
-		//给这个创建出来的对象起个名字  
-		obj1.name = "dujia";  
-		//设置物体的tag值，在赋值之前要在Inspector面板中注册一个tag值  
-		//注册tag值得方法，用鼠标选中摄像机对象在Inspector面板中找到tag，选addtag  
-		obj1.tag = "shui";  
-		//设置物体贴图要图片文件放在(Resources）文件夹下，没有自己创建  
-		//obj1.renderer.material.mainTexture = (Texture)Resources.Load("psb20");	
-	}
 
 	private void renderData() {
 		Debug.Log("xy ==> 2 renderData");
@@ -123,13 +108,13 @@ public class CreateCube : MonoBehaviour {
 		}
 
 		while((s = r.ReadLine()) != null) {
-			Debug.Log ("[ReadLine]: " + s);
+//			Debug.Log ("[ReadLine]: " + s);
 
 			string[] words = s.Split(" "[0]);
-			Debug.Log ("[ReadLine words]: " + words[0]);
-			Debug.Log ("[ReadLine words]: " + words[1]);
-			Debug.Log ("[ReadLine words]: " + words[2]);
-			Debug.Log ("[ReadLine words]: " + words[3]);
+//			Debug.Log ("[ReadLine words]: " + words[0]);
+//			Debug.Log ("[ReadLine words]: " + words[1]);
+//			Debug.Log ("[ReadLine words]: " + words[2]);
+//			Debug.Log ("[ReadLine words]: " + words[3]);
 
 			Vector3 xyz = new Vector3(float.Parse(words[1]), -float.Parse(words[2]), float.Parse(words[3]));
 			arrayListXYZ.Add(xyz);
@@ -204,6 +189,22 @@ public class CreateCube : MonoBehaviour {
 	void Update () {
 //		GameObject obj4 = GameObject.FindGameObjectWithTag("shui");
 //		GUILayout.Label ("position" + obj4.transform.position);
+	}
+
+	private void createSemphere(float x, float y, float z) {
+		Debug.Log("xy ==> createSemphere");
+
+		//我们将obj1初始化为一个Cube立方体，当然我们也可以初始化为其他的形状  
+		GameObject obj1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);  
+		//设置物体的位置Vector3三个参数分别代表x,y,z的坐标数  
+		obj1.transform.position = new Vector3(x,y,z);  
+		//给这个创建出来的对象起个名字  
+		obj1.name = "dujia";  
+		//设置物体的tag值，在赋值之前要在Inspector面板中注册一个tag值  
+		//注册tag值得方法，用鼠标选中摄像机对象在Inspector面板中找到tag，选addtag  
+		obj1.tag = "shui";  
+		//设置物体贴图要图片文件放在(Resources）文件夹下，没有自己创建  
+		//obj1.renderer.material.mainTexture = (Texture)Resources.Load("psb20");	
 	}
 
 	//	private void readData() {
