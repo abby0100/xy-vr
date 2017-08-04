@@ -1,0 +1,32 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.IO;
+using System.Text;
+
+public class objRender : MonoBehaviour {
+
+	// Use this for initialization
+	void Start () {
+		testObjRender ();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+
+
+	private void testObjRender() {
+		Debug.Log("testObjRender");
+
+		//string path = "file:///Users/dilitech/Desktop/panzhiwei/unity356/testobj/Test/AW_055_YIGUI_1(Clone).obj";
+		string path = "file:///D:/nanosuit.obj";
+
+		string _textureLink = "";
+		ObjReaderInSence obj = new ObjReaderInSence();
+		StartCoroutine(obj.SomeFunction(path,_textureLink));//obj路径&&贴图路径
+	}
+
+
+}

@@ -1,0 +1,400 @@
+﻿
+using UnityEngine;
+using System.Collections;
+
+public class Test : MonoBehaviour {
+
+	// Use this for initialization
+	void Start () {
+		string path = "file:///Users/dilitech/Desktop/panzhiwei/unity356/testobj/Test/AW_055_YIGUI_1(Clone).obj";
+		string _textureLink = "";
+		ObjReaderInSence obj = new ObjReaderInSence();
+		StartCoroutine(obj.SomeFunction(path,_textureLink));//obj路径&&贴图路径
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+	}
+}
+
+
+using UnityEngine;
+using System.Collections;
+using System.IO;
+using System.Collections.Generic;
+using System.Globalization;
+
+public class ObjReaderInSence : MonoBehaviour {
+	Mesh _myMesh;
+	Material _myMaterial = new Material(Shader.Find("Diffuse"));
+	
+	Vector3[] _vertexArray;
+	ArrayList _vertexArrayList = new ArrayList();
+	Vector3[] _normalArray;
+	ArrayList _normalArrayList = new ArrayList();
+	Vector2[] _uvArray;
+	ArrayList _uvArrayList = new ArrayList();
+	
+	int[] _triangleArray;
+	
+	ArrayList _facesVertNormUV = new ArrayList();
+	
+	internal class PlacesByIndex {
+		public PlacesByIndex(int index) {
+			_index = index;
+		}
+		public int _index;
+		public ArrayList _places = new ArrayList();
+	}
+	void initArrayLists() {
+		_uvArrayList = new ArrayList();
+		_normalArrayList = new ArrayList();
+		_vertexArrayList = new ArrayList();
+		_facesVertNormUV = new ArrayList();
+	}
+	
+	public IEnumerator SomeFunction(string path,string _textureLink) {;
+		GameObject obj_gameobject = new GameObject();
+		obj_gameobject.name = path;
+		initArrayLists();
+		if (_myMesh != null)
+			_myMesh.Clear();
+		_myMesh = new Mesh();
+		_myMesh.name = path;
+		WWW www3d = new WWW(path);
+		yield return www3d;
+		string s = www3d.data;
+		s = s.Replace("  ", " ");
+		s = s.Replace("  ", " ");
+		LoadFile(s);
+		_myMesh.vertices = _vertexArray;
+		_myMesh.triangles = _triangleArray;
+		if (_uvArrayList.Count > 0)
+			_myMesh.uv = _uvArray;
+		if (_normalArrayList.Count > 0)
+			_myMesh.normals = _normalArray;
+		else
+			_myMesh.RecalculateNormals();
+		_myMesh.RecalculateBounds();
+		if ((MeshFilter)obj_gameobject.GetComponent("MeshFilter") == null)
+			obj_gameobject.AddComponent("MeshFilter");
+		MeshFilter temp;
+		temp = (MeshFilter)obj_gameobject.GetComponent("MeshFilter");
+		temp.mesh = _myMesh;
+		if ((MeshRenderer)obj_gameobject.GetComponent("MeshRenderer") == null)
+			obj_gameobject.AddComponent("MeshRenderer");
+		if (_uvArrayList.Count > 0 && _textureLink != "") {
+			WWW wwwtx = new WWW(_textureLink);
+			yield return wwwtx;
+			_myMaterial.mainTexture = wwwtx.texture;
+		}
+		MeshRenderer temp2;
+		temp2 = (MeshRenderer)obj_gameobject.GetComponent("MeshRenderer");
+		if (_uvArrayList.Count > 0 && _textureLink != "") {
+			temp2.material = _myMaterial;
+			_myMaterial.shader = Shader.Find("Diffuse");
+		}
+		yield return new WaitForFixedUpdate();
+	}
+	
+	public void LoadFile(string s) {
+		string[] lines = s.Split("\n"[0]);
+		
+		foreach (string item in lines) {
+			ReadLine(item);
+		}
+		ArrayList tempArrayList = new ArrayList();
+		for (int i = 0; i < _facesVertNormUV.Count; ++i) {
+			if (_facesVertNormUV[i] != null) {
+				PlacesByIndex indextemp = new PlacesByIndex(i);
+				indextemp._places.Add(i);
+				for (int j = 0; j < _facesVertNormUV.Count; ++j) {
+					if (_facesVertNormUV[j] != null) {
+						if (i != j) {
+							Vector3 iTemp = (Vector3)_facesVertNormUV[i];
+							Vector3 jTemp = (Vector3)_facesVertNormUV[j];
+							if (iTemp.x == jTemp.x && iTemp.y == jTemp.y) {
+								indextemp._places.Add(j);
+								_facesVertNormUV[j] = null;
+							}
+						}
+					}
+				}
+				tempArrayList.Add(indextemp);
+			}
+		}
+		_vertexArray = new Vector3[tempArrayList.Count];
+		_uvArray = new Vector2[tempArrayList.Count];
+		_normalArray = new Vector3[tempArrayList.Count];
+		_triangleArray = new int[_facesVertNormUV.Count];
+		int teller = 0;
+		foreach (PlacesByIndex item in tempArrayList) {
+			foreach (int item2 in item._places) {
+				_triangleArray[item2] = teller;
+			}
+			Vector3 vTemp = (Vector3)_facesVertNormUV[item._index];
+			_vertexArray[teller] = (Vector3)_vertexArrayList[(int)vTemp.x - 1];
+			if (_uvArrayList.Count > 0) {
+				Vector3 tVec = (Vector3)_uvArrayList[(int)vTemp.y - 1];
+				_uvArray[teller] = new Vector2(tVec.x, tVec.y);
+			}
+			if (_normalArrayList.Count > 0) {
+				_normalArray[teller] = (Vector3)_normalArrayList[(int)vTemp.z - 1];
+			}
+			teller++;
+		}
+	}
+	
+	public void ReadLine(string s) {
+		char[] charsToTrim = {' ', '\n', '\t', '\r'};
+		s= s.TrimEnd(charsToTrim);
+		string[] words = s.Split(" "[0]);
+		foreach (string item in words)
+			item.Trim();
+		if (words[0] == "v")
+			_vertexArrayList.Add(new Vector3(System.Convert.ToSingle(words[1], CultureInfo.InvariantCulture), System.Convert.ToSingle(words[2], CultureInfo.InvariantCulture), System.Convert.ToSingle(words[3], CultureInfo.InvariantCulture)));
+
+		if (words[0] == "vn")
+			_normalArrayList.Add(new Vector3(System.Convert.ToSingle(words[1], CultureInfo.InvariantCulture), System.Convert.ToSingle(words[2], CultureInfo.InvariantCulture), System.Convert.ToSingle(words[3], CultureInfo.InvariantCulture)));
+		if (words[0] == "vt") 
+			_uvArrayList.Add(new Vector3(System.Convert.ToSingle(words[1], CultureInfo.InvariantCulture), System.Convert.ToSingle(words[2], CultureInfo.InvariantCulture)));
+		if (words[0] == "f") {
+			ArrayList temp = new ArrayList();
+			ArrayList triangleList = new ArrayList();
+			for (int j = 1; j < words.Length; ++j)
+			{
+				Vector3 indexVector = new Vector3(0,0);
+				string[] indices = words[j].Split("/"[0]);
+				indexVector.x = System.Convert.ToInt32(indices[0], CultureInfo.InvariantCulture);
+				if (indices.Length > 1) {
+					if (indices[1] != "")
+						indexVector.y = System.Convert.ToInt32(indices[1], CultureInfo.InvariantCulture);
+				}
+				if (indices.Length > 2) {
+					if (indices[2] != "")
+						indexVector.z = System.Convert.ToInt32(indices[2], CultureInfo.InvariantCulture);
+				}
+				temp.Add(indexVector);
+			}
+			for (int i = 1; i < temp.Count - 1; ++i) {
+				triangleList.Add(temp[0]);
+				triangleList.Add(temp[i]);
+				triangleList.Add(temp[i+1]);
+			}
+
+			foreach (Vector3 item in triangleList) {
+				_facesVertNormUV.Add(item);
+			}
+		}
+	}
+}
+
+
+
+
+//**********************Not usable****************************
+
+/// <summary>
+/// 从一个文本化后的.obj文件中加载模型
+/// </summary>
+public ObjMesh LoadFromObj(string objText)
+{
+	if(objText.Length <= 0) 
+		return null;
+	//v这一行前面是两个空格后面是一个空格
+	objText=objText.Replace("  ", " ");
+
+	//将文本化后的obj文件内容按行分割
+	string[] allLines = objText.Split('\n');
+	foreach(string line in allLines)
+	{
+		//将每一行按空格分割
+		string[] chars = line.Split(' ');
+		//根据第一个字符来判断数据的类型
+		switch(chars[0])
+		{
+		case "v":
+			//处理顶点
+			this.vertexArrayList.Add(new Vector3(
+				ConvertToFloat(chars[1]), 
+				ConvertToFloat(chars[2]),
+				ConvertToFloat(chars[3]))
+			);
+			break;
+		case "vn":
+			//处理法线
+			this.normalArrayList.Add(new Vector3(
+				ConvertToFloat(chars[1]), 
+				ConvertToFloat(chars[2]), 
+				ConvertToFloat(chars[3]))
+			);
+			break;
+		case "vt":
+			//处理UV
+			this.uvArrayList.Add(new Vector3(
+				ConvertToFloat(chars[1]),
+				ConvertToFloat(chars[2]))
+			);
+			break;
+		case "f":
+			//处理面
+			GetTriangleList(chars);
+			break;
+		}
+	}
+}
+
+/// 获取面列表.
+/// </summary>
+/// <param name="chars">Chars.</param>
+private void GetTriangleList(string[] chars)
+{
+	List<Vector3> indexVectorList = new List<Vector3>();
+	List<Vector3> triangleList = new List<Vector3>();
+
+	for(int i = 1; i < chars.Length;++i )
+	{
+		//将每一行按照空格分割后从第一个元素开始
+		//按照/继续分割可依次获得顶点索引、法线索引和UV索引
+		string[] indexs = chars[i].Split('/');
+		Vector3 indexVector = new Vector3(0, 0);
+		//顶点索引
+		indexVector.x = ConvertToInt(indexs[0]);
+		//法线索引
+		if(indexs.Length > 1){
+			if(indexs[1] != "")
+				indexVector.y = ConvertToInt(indexs[1]);
+		}
+		//UV索引
+		if(indexs.Length > 2){
+			if(indexs[2] != "")
+				indexVector.z = ConvertToInt(indexs[2]);
+		}
+
+		//将索引向量加入列表中
+		indexVectorList.Add(indexVector);
+	}
+
+	//这里需要研究研究
+	for(int j = 1; j < indexVectorList.Count - 1; ++j)
+	{
+		//按照0,1,2这样的方式来组成面
+		triangleList.Add(indexVectorList[0]);
+		triangleList.Add(indexVectorList[j]);
+		triangleList.Add(indexVectorList[j + 1]);
+	}
+
+	//添加到索引列表
+	foreach(Vector3 item in triangleList)
+	{
+		faceVertexNormalUV.Add(item);
+	}
+}
+
+/// 合并三角面
+/// </summary>
+private void Combine()
+{
+	//使用一个字典来存储要合并的索引信息
+	Dictionary<int, ArrayList> toCambineList = new Dictionary<int,ArrayList>();
+	for(int i = 0; i < faceVertexNormalUV.Count; i++)
+	{
+		if(faceVertexNormalUV[i] != Vector3.zero)
+		{
+			//相同索引的列表
+			ArrayList SameIndexList = new ArrayList();
+			SameIndexList.Add(i);
+			for(int j = 0; j < faceVertexNormalUV.Count; j++)
+			{
+				if(faceVertexNormalUV[j]!=Vector3.zero)
+				{
+					if(i != j)
+					{
+						//如果顶点索引和法线索引相同，说明它们在一个面上
+						Vector3 iTemp = (Vector3)faceVertexNormalUV[i];
+						Vector3 jTemp = (Vector3)faceVertexNormalUV[j];
+						if(iTemp.x == jTemp.x && iTemp.y == jTemp.y)
+						{
+							//将索引相同索引列表然后将其重置为零向量
+							//PS:这是个危险的地方，如果某个索引信息为Vector3.Zero
+							//就会被忽略过去，可是貌似到目前为止没有发现为Vector3.Zero的情况
+							SameIndexList.Add(j);
+							faceVertexNormalUV[j]=Vector3.zero;
+						}
+					}
+				}
+			}
+			//用一个索引来作为字典的键名，这样它可以代替对应列表内所有索引
+			toCambineList.Add(i, SameIndexList);
+		}
+	}
+}
+
+
+//初始化各个数组
+this.VertexArray = new Vector3[toCambineList.Count];
+this.UVArray = new Vector2[toCambineList.Count];
+this.NormalArray = new Vector3[toCambineList.Count];
+this.TriangleArray = new int[faceVertexNormalUV.Count];
+
+//定义遍历字典的计数器
+int count = 0;
+
+//遍历词典
+foreach(KeyValuePair<int,ArrayList> IndexTtem in toCambineList)
+{
+	//根据索引给面数组赋值
+	foreach(int item in IndexTtem.Value)
+	{
+		TriangleArray[item] = count;
+	}
+
+	//当前的顶点、UV、法线索引信息
+	Vector3 VectorTemp = (Vector3)faceVertexNormalUV[IndexTtem.Key];
+
+	//给顶点数组赋值
+	VertexArray[count] = (Vector3)vertexArrayList[(int)VectorTemp.x - 1];
+
+	//给UV数组赋值
+	if(uvArrayList.Count > 0)
+	{
+		Vector3 tVec =(Vector3)uvArrayList[(int)VectorTemp.y - 1];
+		UVArray[count] = new Vector2(tVec.x, tVec.y);
+	}
+
+	//给法线数组赋值
+	if(normalArrayList.Count > 0)
+	{
+		NormalArray[count] = (Vector3)normalArrayList[(int)VectorTemp.z - 1];
+	}
+
+	count++;
+}
+
+
+
+if(!File.Exists("D:\\cube.obj"))
+	Debug.Log("请确认obj模型文件是否存在!");
+
+StreamReader reader = new StreamReader("D:\\cube.obj",Encoding.Default);
+string content = reader.ReadToEnd();
+reader.Close();
+
+ObjMesh objInstace = new ObjMesh();
+objInstace = objInstace.LoadFromObj(content);
+
+Mesh mesh = new Mesh();
+mesh.vertices = objInstace.VertexArray;
+mesh.triangles = objInstace.TriangleArray;
+if(objInstace.UVArray.Length > 0)
+	mesh.uv = objInstace.UVArray;
+if(objInstace.NormalArray.Length>0)
+	mesh.normals = objInstace.NormalArray;
+mesh.RecalculateBounds();
+
+GameObject go = new GameObject();
+MeshFilter meshFilter = go.AddComponent<MeshFilter>();
+meshFilter.mesh = mesh;
+
+MeshRenderer meshRenderer = go.AddComponent<MeshRenderer>();
