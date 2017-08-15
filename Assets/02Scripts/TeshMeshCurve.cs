@@ -7,7 +7,7 @@ public class TeshMeshCurve : MonoBehaviour {
 	private string LOG_TAG = "[TeshMeshCurve] ";
 
 	public Material material;
-	public int segments = 20;
+	public int segments = 4;
 	public int innerRadium = 5;
 	public int radium = 10;
 	public Vector3 circleCenter = new Vector3 (0, 0, 0);
@@ -18,11 +18,72 @@ public class TeshMeshCurve : MonoBehaviour {
 //		TestVector ();
 //		DrawTriangle ();
 //		DrawSquare ();
-		DrawCircle (radium);
-//		DrawRing(innerRadium, radium);
+//		DrawCircle (radium);
+		DrawRing(innerRadium, radium);
 
 	}
 
+	void DrawRing (int innerRadio, int outerRadio) {
+		Debug.Log (LOG_TAG + "DrawRing innerRadio " + innerRadio + ", outerRadio " + outerRadio);
+
+		MeshFilter filter = gameObject.AddComponent<MeshFilter> ();
+		MeshRenderer renderer = gameObject.AddComponent<MeshRenderer> ();
+		renderer.material = material;
+
+		Mesh mesh = filter.mesh;
+		mesh.Clear();
+
+		float deltaAngle = Mathf.Deg2Rad * 360f / segments;
+		float currentAngle = 0;
+
+		Vector3[] vertices = new Vector3[segments * 2];
+		for (int i = 0; i < segments; i++) {
+			float cosA = Mathf.Cos (currentAngle);
+			float SinA = Mathf.Sin (currentAngle);
+
+			vertices [i * 2] = new Vector3 (circleCenter.x + cosA * innerRadio,circleCenter.y + SinA * innerRadio,circleCenter.z);
+			vertices [i * 2 + 1] = new Vector3 (circleCenter.x + cosA * outerRadio,circleCenter.y + SinA * outerRadio,circleCenter.z);
+			currentAngle += deltaAngle;
+		}
+
+		int[] triangles = new int[segments * 6];
+		for (int i = 0, j = 0; i < segments * 6; i+=6, j+=2) {
+
+			triangles [i] = j;
+			triangles [i + 1] = (j+3) % vertices.Length;
+			triangles [i + 2] = (j+1) % vertices.Length;
+
+			triangles [i + 3] = j;
+			triangles [i + 4] = (j+2) % vertices.Length;
+			triangles [i + 5] = (j+3) % vertices.Length;
+
+			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 0]);
+			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 1]);
+			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 2]);
+			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 3]);
+			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 4]);
+			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 5]);
+
+
+//			triangles [i * 6] = 2 * i;
+//			triangles [i * 6 + 2] = 2 * i + 1;
+//			triangles [i * 6 + 1] = 2 * i + 3;
+//
+//			triangles [i * 6 + 3] = 2 * i;
+//			triangles [i * 6 + 5] = 2 * i + 3;
+//			triangles [i * 6 + 4] = 2 * i + 2;
+//
+//			Debug.Log (LOG_TAG + "triangles " + (i * 6 + 0) + ": " + triangles [i * 6 + 0]);
+//			Debug.Log (LOG_TAG + "triangles " + (i * 6 + 1) + ": " + triangles [i * 6 + 1]);
+//			Debug.Log (LOG_TAG + "triangles " + (i * 6 + 2) + ": " + triangles [i * 6 + 2]);
+//			Debug.Log (LOG_TAG + "triangles " + (i * 6 + 3) + ": " + triangles [i * 6 + 3]);
+//			Debug.Log (LOG_TAG + "triangles " + (i * 6 + 4) + ": " + triangles [i * 6 + 4]);
+//			Debug.Log (LOG_TAG + "triangles " + (i * 6 + 5) + ": " + triangles [i * 6 + 5]);
+		}
+
+		mesh.vertices = vertices;
+		mesh.triangles = triangles;
+	}
 
 	void DrawCircle (int circleRadium) {
 
