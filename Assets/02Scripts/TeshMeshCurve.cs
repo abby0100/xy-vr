@@ -7,7 +7,7 @@ public class TeshMeshCurve : MonoBehaviour {
 	private string LOG_TAG = "[TeshMeshCurve] ";
 
 	public Material material;
-	public int segments = 4;
+	public int segments = 100;
 	public int innerRadium = 5;
 	public int radium = 10;
 	public Vector3 circleCenter = new Vector3 (0, 0, 0);
@@ -47,39 +47,56 @@ public class TeshMeshCurve : MonoBehaviour {
 		}
 
 		int[] triangles = new int[segments * 6];
-		for (int i = 0, j = 0; i < segments * 6; i+=6, j+=2) {
 
-			triangles [i] = j;
-			triangles [i + 1] = (j+3) % vertices.Length;
-			triangles [i + 2] = (j+1) % vertices.Length;
+		for (int i = 0; i < segments; i++) {
 
-			triangles [i + 3] = j;
-			triangles [i + 4] = (j+2) % vertices.Length;
-			triangles [i + 5] = (j+3) % vertices.Length;
+			int index = i * 6;
+			int begin = i * 2;
 
-			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 0]);
-			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 1]);
-			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 2]);
-			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 3]);
-			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 4]);
-			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 5]);
+			// show ring
+			triangles [index] = begin;
+			triangles [index + 1] = (begin + 3) % vertices.Length;
+			triangles [index + 2] = (begin + 1) % vertices.Length;
 
+			triangles [index + 3] = begin;
+			triangles [index + 4] = (begin + 2) % vertices.Length;
+			triangles [index + 5] = (begin + 3) % vertices.Length;
 
-//			triangles [i * 6] = 2 * i;
-//			triangles [i * 6 + 2] = 2 * i + 1;
-//			triangles [i * 6 + 1] = 2 * i + 3;
-//
-//			triangles [i * 6 + 3] = 2 * i;
-//			triangles [i * 6 + 5] = 2 * i + 3;
-//			triangles [i * 6 + 4] = 2 * i + 2;
-//
-//			Debug.Log (LOG_TAG + "triangles " + (i * 6 + 0) + ": " + triangles [i * 6 + 0]);
-//			Debug.Log (LOG_TAG + "triangles " + (i * 6 + 1) + ": " + triangles [i * 6 + 1]);
-//			Debug.Log (LOG_TAG + "triangles " + (i * 6 + 2) + ": " + triangles [i * 6 + 2]);
-//			Debug.Log (LOG_TAG + "triangles " + (i * 6 + 3) + ": " + triangles [i * 6 + 3]);
-//			Debug.Log (LOG_TAG + "triangles " + (i * 6 + 4) + ": " + triangles [i * 6 + 4]);
-//			Debug.Log (LOG_TAG + "triangles " + (i * 6 + 5) + ": " + triangles [i * 6 + 5]);
+			// show serrate 1
+//			triangles [index] = begin;
+//			triangles [index + 1] = (begin + 1) % vertices.Length;
+//			triangles [index + 2] = (begin + 3) % vertices.Length;
+
+			// show serrate 2
+			triangles [index + 3] = begin;
+			triangles [index + 4] = (begin + 3) % vertices.Length;
+			triangles [index + 5] = (begin + 2) % vertices.Length;
+
+//			Debug.Log (LOG_TAG + "triangles " + (index + 0) + ": " + triangles [index + 0]);
+//			Debug.Log (LOG_TAG + "triangles " + (index + 1) + ": " + triangles [index + 1]);
+//			Debug.Log (LOG_TAG + "triangles " + (index + 2) + ": " + triangles [index + 2]);
+//			Debug.Log (LOG_TAG + "triangles " + (index + 3) + ": " + triangles [index + 3]);
+//			Debug.Log (LOG_TAG + "triangles " + (index + 4) + ": " + triangles [index + 4]);
+//			Debug.Log (LOG_TAG + "triangles " + (index + 5) + ": " + triangles [index + 5]);
 		}
+
+//		for (int i = 0, j = 0; i < segments * 6; i+=6, j+=2) {
+//
+//			triangles [i] = j;
+//			triangles [i + 1] = (j+3) % vertices.Length;
+//			triangles [i + 2] = (j+1) % vertices.Length;
+//
+//			triangles [i + 3] = j;
+//			triangles [i + 4] = (j+2) % vertices.Length;
+//			triangles [i + 5] = (j+3) % vertices.Length;
+//
+//			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 0]);
+//			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 1]);
+//			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 2]);
+//			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 3]);
+//			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 4]);
+//			Debug.Log (LOG_TAG + "triangles " + (i) + ": " + triangles [i + 5]);
+//		}
 
 		mesh.vertices = vertices;
 		mesh.triangles = triangles;
