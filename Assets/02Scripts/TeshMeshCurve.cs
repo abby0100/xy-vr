@@ -47,13 +47,13 @@ public class TeshMeshCurve : MonoBehaviour {
 			float cosA = Mathf.Cos (currentAngle);
 			float SinA = Mathf.Sin (currentAngle);
 			float mX = circleCenter.x + cosA * myRadium;
-			float mY = circleCenter.y + SinA * myRadium;
-			float mZ = circleCenter.z;
+			float mZ = circleCenter.z + SinA * myRadium;
+			float mY = circleCenter.y;
 
 			int index = rows * i;
 
 			for (int j = 0; j < rows; j++) {
-				vertices [index + j] = new Vector3 (mX, mY, mZ + deltaHeighe * j);
+				vertices [index + j] = new Vector3 (mX, mY + deltaHeighe * j, mZ);
 
 				Debug.Log (LOG_TAG + "vertices " + (index + j) + ": " + vertices [index + j]);
 			}
@@ -61,83 +61,36 @@ public class TeshMeshCurve : MonoBehaviour {
 			currentAngle += deltaAngle;
 		}
 
-		int points = rows * (columes - 1) - 1;
+		int pointsLength = rows * (columes - 1) - 1;
 
-		int[] triangles = new int[points * 6];
+		int[] triangles = new int[pointsLength * 6];
 		Debug.Log (LOG_TAG + "triangles Length ==> " + triangles.Length);
 
-		for (int i = 0; i < points; i++) {
-			int triIndex = 6 * i;
-			int pointIndex = i;
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columes; j++) {
 
-			triangles [triIndex] = pointIndex;
-			triangles [triIndex + 1] = pointIndex + 1;
-			triangles [triIndex + 2] = pointIndex + 6;
+				int pointIndex = j * rows + i;
+				int triIndex = pointIndex * 6;
 
-			triangles [triIndex + 3] = pointIndex;
-			triangles [triIndex + 4] = pointIndex + 6;
-			triangles [triIndex + 5] = pointIndex + 5;
+				if (pointIndex < pointsLength) {
+					triangles [triIndex] = pointIndex;
+					triangles [triIndex + 1] = pointIndex + 1;
+					triangles [triIndex + 2] = pointIndex + rows + 1;
 
-			Debug.Log (LOG_TAG + "triangles " + (triIndex) + ": " + triangles [triIndex]);
-			Debug.Log (LOG_TAG + "triangles " + (triIndex + 1) + ": " + triangles [triIndex + 1]);
-			Debug.Log (LOG_TAG + "triangles " + (triIndex + 2) + ": " + triangles [triIndex + 2]);
-			Debug.Log (LOG_TAG + "triangles " + (triIndex + 3) + ": " + triangles [triIndex + 3]);
-			Debug.Log (LOG_TAG + "triangles " + (triIndex + 4) + ": " + triangles [triIndex + 4]);
-			Debug.Log (LOG_TAG + "triangles " + (triIndex + 5) + ": " + triangles [triIndex + 5]);
+					triangles [triIndex + 3] = pointIndex;
+					triangles [triIndex + 4] = pointIndex + rows + 1;
+					triangles [triIndex + 5] = pointIndex + rows;
+
+//					Debug.Log (LOG_TAG + "triangles " + (triIndex) + ": " + triangles [triIndex]);
+//					Debug.Log (LOG_TAG + "triangles " + (triIndex + 1) + ": " + triangles [triIndex + 1]);
+//					Debug.Log (LOG_TAG + "triangles " + (triIndex + 2) + ": " + triangles [triIndex + 2]);
+//					Debug.Log (LOG_TAG + "triangles " + (triIndex + 3) + ": " + triangles [triIndex + 3]);
+//					Debug.Log (LOG_TAG + "triangles " + (triIndex + 4) + ": " + triangles [triIndex + 4]);
+//					Debug.Log (LOG_TAG + "triangles " + (triIndex + 5) + ": " + triangles [triIndex + 5]);
+				}
+			}
 		}
 
-//		Vector3[] vertices = new Vector3[rows * columes];
-//		for (int i = 0; i < columes; i++) {
-//
-//			float cosA = Mathf.Cos (currentAngle);
-//			float SinA = Mathf.Sin (currentAngle);
-//			float mX = circleCenter.x + cosA * myRadium;
-//			float mY = circleCenter.y + SinA * myRadium;
-//			float mZ = circleCenter.z;
-//
-//			int index = rows * i;
-//
-//			for (int j = 0; j < rows; j++) {
-//				vertices [index + j] = new Vector3 (mX, mY, mZ + deltaHeighe * i);
-//
-//				Debug.Log (LOG_TAG + "vertices " + (index + j) + ": " + vertices [index + j]);
-//			}
-//
-//			currentAngle += deltaAngle;
-//		}
-
-//		int[] triangles = new int[( rows * (columes - 1) + rows - 1 ) * 6];
-//		Debug.Log (LOG_TAG + "triangles Length ==> " + triangles.Length);
-//
-//		for (int i = 0; i < columes - 2; i++) {
-//
-//			int index = (rows - 1) * i;
-//			Debug.Log (LOG_TAG + "triangles index ==> " + index);
-//
-//			for (int j = 0; j < rows - 2; j++) {
-//				int point = index + j;
-//				Debug.Log (LOG_TAG + "point ==> " + point);
-//
-//				int triIndex = point * 6;
-//
-//				// show cylinder
-//				triangles [triIndex] = point;
-//				triangles [triIndex + 1] = point + 1;
-//				triangles [triIndex + 2] = point + 6;
-//
-//				triangles [triIndex + 3] = point;
-//				triangles [triIndex + 4] = point + 6;
-//				triangles [triIndex + 5] = point + 5;
-//
-//				Debug.Log (LOG_TAG + "triangles " + (triIndex) + ": " + triangles [triIndex]);
-//				Debug.Log (LOG_TAG + "triangles " + (triIndex + 1) + ": " + triangles [triIndex + 1]);
-//				Debug.Log (LOG_TAG + "triangles " + (triIndex + 2) + ": " + triangles [triIndex + 2]);
-//				Debug.Log (LOG_TAG + "triangles " + (triIndex + 3) + ": " + triangles [triIndex + 3]);
-//				Debug.Log (LOG_TAG + "triangles " + (triIndex + 4) + ": " + triangles [triIndex + 4]);
-//				Debug.Log (LOG_TAG + "triangles " + (triIndex + 5) + ": " + triangles [triIndex + 5]);
-//			}
-//		}
-			
 		Mesh mesh = filter.mesh;
 		mesh.Clear();
 
