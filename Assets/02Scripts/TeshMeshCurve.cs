@@ -62,32 +62,32 @@ public class TeshMeshCurve : MonoBehaviour {
 		}
 
 		int pointsLength = rows * (columes - 1) - 1;
+		int trianglesLength = pointsLength * 6;
 
 		int[] triangles = new int[pointsLength * 6];
 		Debug.Log (LOG_TAG + "triangles Length ==> " + triangles.Length);
 
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columes; j++) {
+		// columes - 1 = rows - 1 = segments
+		for (int i = 0; i < columes - 1; i++) {
+			for (int j = 0; j < rows - 1; j++) {
 
-				int pointIndex = j * rows + i;
-				int triIndex = pointIndex * 6;
+				int trianglePos = i * (columes - 1) + j;
+				int triIndex = trianglePos * 6;
 
-				if (pointIndex < pointsLength) {
-					triangles [triIndex] = pointIndex;
-					triangles [triIndex + 1] = pointIndex + 1;
-					triangles [triIndex + 2] = pointIndex + rows + 1;
+				triangles [triIndex] = trianglePos + i;
+				triangles [triIndex + 1] = trianglePos + i + 1 + rows;
+				triangles [triIndex + 2] = trianglePos + i + 1;
 
-					triangles [triIndex + 3] = pointIndex;
-					triangles [triIndex + 4] = pointIndex + rows + 1;
-					triangles [triIndex + 5] = pointIndex + rows;
+				triangles [triIndex + 3] = trianglePos + i;
+				triangles [triIndex + 4] = trianglePos + i + rows;
+				triangles [triIndex + 5] = trianglePos + i + 1 + rows;
 
-//					Debug.Log (LOG_TAG + "triangles " + (triIndex) + ": " + triangles [triIndex]);
-//					Debug.Log (LOG_TAG + "triangles " + (triIndex + 1) + ": " + triangles [triIndex + 1]);
-//					Debug.Log (LOG_TAG + "triangles " + (triIndex + 2) + ": " + triangles [triIndex + 2]);
-//					Debug.Log (LOG_TAG + "triangles " + (triIndex + 3) + ": " + triangles [triIndex + 3]);
-//					Debug.Log (LOG_TAG + "triangles " + (triIndex + 4) + ": " + triangles [triIndex + 4]);
-//					Debug.Log (LOG_TAG + "triangles " + (triIndex + 5) + ": " + triangles [triIndex + 5]);
-				}
+				Debug.Log (LOG_TAG + "triangles " + (triIndex) + ": " + triangles [triIndex]);
+				Debug.Log (LOG_TAG + "triangles " + (triIndex + 1) + ": " + triangles [triIndex + 1]);
+				Debug.Log (LOG_TAG + "triangles " + (triIndex + 2) + ": " + triangles [triIndex + 2]);
+				Debug.Log (LOG_TAG + "triangles " + (triIndex + 3) + ": " + triangles [triIndex + 3]);
+				Debug.Log (LOG_TAG + "triangles " + (triIndex + 4) + ": " + triangles [triIndex + 4]);
+				Debug.Log (LOG_TAG + "triangles " + (triIndex + 5) + ": " + triangles [triIndex + 5]);
 			}
 		}
 
